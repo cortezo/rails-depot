@@ -62,7 +62,10 @@ class LineItemsController < ApplicationController
     @line_item.destroy
     
     respond_to do |format|
-      if current_cart.line_items.count <= 0
+      if current_cart == nil
+        format.html { redirect_to store_url, notice: 'There is no cart associated with this Line Item' }
+        format.json { head :no_content }
+      elsif current_cart.line_items.count <= 0
         format.html { redirect_to store_url, notice: 'Line item was successfully destroyed.  Your cart is now empty.' }
         format.json { head :no_content }
       else
